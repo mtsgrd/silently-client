@@ -1,0 +1,10 @@
+.textinput {
+    border: 2px solid #ccc;
+    cursor: pointer;
+    display: block;  
+    height: 50px;
+    width: 200px;
+    &.hover {
+        border: 2px solid #fff;
+    }
+}

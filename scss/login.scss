@@ -1,0 +1,19 @@
+@import "mixins.scss";
+
+#login-page {
+    background-color: rgba(255,255,255,0.8);;
+    font-family: 'Oswald';
+    height: 100%;
+    position: absolute;
+    opacity: 1;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: center;
+    width: 100%;
+    z-index: 9;
+    @include transition-easein(100ms);
+    &.disabled {
+        z-index: -1;
+        opacity: 0;
+    }
+}

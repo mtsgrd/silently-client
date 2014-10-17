@@ -1,0 +1,34 @@
+$sprite_url: url('/img/art.svg');
+
+@mixin sprite($width, $height, $x, $y) {
+    background: $sprite_url no-repeat $x $y;
+    width: $width;
+    height: $height;
+}
+@mixin spritehover($x, $y) {
+    background-position: $x $y;
+}
+
+@mixin transform($tx, $ty, $tz, $sx, $sy, $sz) {
+    transform : translate3d($tx, $ty, $tz) scale($sx, $sy);
+    -o-transform : translate3d($tx, $ty, $tz) scale($sx, $sy);
+    -ms-transform : translate3d($tx, $ty, $tz) scale($sx, $sy);
+    -moz-transform : translate3d($tx, $ty, $tz) scale($sx, $sy);
+    -webkit-transform : translate3d($tx, $ty, $tz) scale($sx, $sy);
+}
+
+@mixin transition-cb($ms, $t1, $t2, $t3, $t4) {
+    transition: $ms cubic-bezier($t1, $t2, $t3, $t4);
+    -o-transition: $ms cubic-bezier($t1, $t2, $t3, $t4);
+    -ms-transition: $ms cubic-bezier($t1, $t2, $t3, $t4);
+    -moz-transition: $ms cubic-bezier($t1, $t2, $t3, $t4);
+    -webkit-transition: $ms cubic-bezier($t1, $t2, $t3, $t4);
+};
+
+@mixin transition-easein($ms) {
+    transition: $ms ease-in;
+    -o-transition: $ms ease-in;
+    -ms-transition: $ms ease-in;
+    -moz-transition: $ms ease-in;
+    -webkit-transition: $ms ease-in;
+};
