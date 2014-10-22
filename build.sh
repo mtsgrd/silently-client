@@ -36,7 +36,7 @@ rename_map_file=public/js/src/renaming_map.js
 cssout=public/css/$fileflag.css
 java -jar compilers/closure-stylesheets.jar \
   --pretty-print \
-  --output-renaming-map-format $cssrenameflag\
+  --output-renaming-map-format CLOSURE_COMPILED \
   --output-renaming-map $rename_map_file \
   --rename $cssrenameflag \
   css/*.css \
