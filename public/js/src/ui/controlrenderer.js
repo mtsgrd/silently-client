@@ -13,12 +13,12 @@
 goog.require('goog.object');
 goog.require('goog.ui.Component');
 goog.require('goog.ui.ControlRenderer');
-goog.provide('silently.ControlRenderer');
+goog.provide('silently.ui.ControlRenderer');
 
 /**
  * @constructor
  */
-silently.ControlRenderer = function() {
+silently.ui.ControlRenderer = function() {
     goog.base(this);
     this.classByState_ = goog.object.create(
             goog.ui.Component.State.SELECTED, goog.getCssName('selected'),
@@ -26,12 +26,12 @@ silently.ControlRenderer = function() {
             goog.ui.Component.State.DISABLED, goog.getCssName('disabled'),
             goog.ui.Component.State.HOVER, goog.getCssName('hover'));
 };
-goog.inherits(silently.ControlRenderer, goog.ui.ControlRenderer);
-goog.addSingletonGetter(silently.ControlRenderer);
+goog.inherits(silently.ui.ControlRenderer, goog.ui.ControlRenderer);
+goog.addSingletonGetter(silently.ui.ControlRenderer);
 
 
 /**
-silently.ControlRenderer.prototype.createDom = function(control) {
+silently.ui.ControlRenderer.prototype.createDom = function(control) {
     var element = control.getDomHelper().createDom(
                   'div', this.getClassNames(control).join(' '));
     if (control.hasTemplate()) {
@@ -45,7 +45,7 @@ silently.ControlRenderer.prototype.createDom = function(control) {
     return element;
 };
 
-silently.ControlRenderer.prototype.decorate = function(control, element) {
+silently.ui.ControlRenderer.prototype.decorate = function(control, element) {
     if (control.hasTemplate()) {
         this.applyTemplate(element, control.getTemplate(),
                 control.getTemplateArgs());
@@ -55,7 +55,7 @@ silently.ControlRenderer.prototype.decorate = function(control, element) {
 };
 
 
-silently.ControlRenderer.prototype.applyTemplate = function(element, template, args) {
+silently.ui.ControlRenderer.prototype.applyTemplate = function(element, template, args) {
     element.innerHTML = template.apply(this, args);
 };
 

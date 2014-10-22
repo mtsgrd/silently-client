@@ -1,9 +1,11 @@
+@import "mixins.scss";
 .goog-custom-button-hover {
     color: #fff;
 };
 .goog-custom-button {
     outline: none;
     border-radius: 4px;
+    cursor: pointer;
 }
 .goog-custom-button-disabled {
     background-color: #666;
@@ -12,5 +14,7 @@
     display: inline-block;
 }
 .goog-custom-button-inner-box {
-    padding: 10px 20px;
+}
+.goog-custom-button-active {
+    @include transform (0, 2px, 0, 1, 1, 0);
 }

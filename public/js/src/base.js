@@ -6,17 +6,22 @@
  * @fileoverview Base for Yoin
  */
 
-goog.require('goog.events.KeyCodes');
+goog.require('goog.dom');
 goog.require('goog.events.KeyHandler');
+goog.require('goog.history.EventType');
+goog.require('goog.history.Html5History');
 goog.require('goog.math.Coordinate');
 goog.require('goog.ui.Component');
-goog.require('soy');
-goog.require('silently.Map');
-goog.require('silently.Login');
-goog.require('silently.Signup');
+goog.require('silently.CssRenameMapping');
+goog.require('silently.Restaurants');
 goog.require('silently.net.WebSocket');
 goog.require('silently.templates.Body');
-goog.require('silently.CssRenameMapping');
+goog.require('silently.ui.MapsAPI');
+goog.require('silently.ui.RestaurantList');
+goog.require('silently.ui.RestaurantPage');
+goog.require('silently.ui.Splash');
+goog.require('silently.ui.Splash');
+goog.require('soy');
 goog.provide('silently.Base');
 
 
@@ -48,7 +53,17 @@ silently.Base = function(apiKey, lat, lng) {
     // Connect web socket.
     silently.net.WebSocket.getInstance().connect();
 
+    // Initialize Maps API
+    silently.ui.MapsAPI.getInstance(apiKey);
+
+    // Key handler for listening to global keyboard events.
     this.keyHandler_ = new goog.events.KeyHandler(document);
+
+    // History object for limited traditional navigation. Most of the time
+    // the page acts more like an app than as a website.
+    this.history_ = new goog.history.Html5History();
+
+    goog.dom.removeNode(goog.dom.getElement('loading_js'));
 };
 goog.inherits(silently.Base, goog.ui.Component);
 
@@ -69,28 +84,49 @@ silently.Base.prototype.createDom = function() {
 /** @override */
 silently.Base.prototype.enterDocument = function() {
     goog.base(this, 'enterDocument');
-    //var map = new silently.Map(this.apiKey, this.loc);
-    //map.render();
-    //this.map = map;
+    //this.signup = silently.ui.Signup.getInstance();
+    this.splash = silently.ui.Splash.getInstance();
     this.attachEvents();
-    this.signup = silently.Signup.getInstance();
 };
 
 silently.Base.prototype.attachEvents = function() {
     var eh = this.getHandler();
-    //eh.listen(this.keyHandler_, goog.events.KeyHandler.EventType.KEY,
-    //        this.handleKey);
+    eh.listenOnce(this.splash,
+            silently.ui.Splash.EventType.READY, this.onSplashReady);
+    eh.listen(this.history_, goog.history.EventType.NAVIGATE,
+            this.onHistoryEvent);
 };
 
 /**
-silently.Base.prototype.handleKey = function(e) {
-    switch (e.keyCode) {
-        case goog.events.KeyCodes.SPACE:
-            this.map.nextStyle();
-            break;
-        case goog.events.KeyCodes.ENTER:
-            this.map.setTransform(!this.map.getTransform());
-            break;
-    }
+ * Load up restaurant list once the splash screen has indicated we are ready
+ * to proceed.
+ * @param {goog.events.Event} e An event object.
+ */
+silently.Base.prototype.onSplashReady = function(e) {
+    this.splash.dispose();
+    this.restaurants = silently.Restaurants.getInstance();
+    this.restaurantList = silently.ui.RestaurantList.getInstance();
+    this.addChild(this.restaurantList, true);
+    this.restaurantList.setVisible(true);
+    this.restaurantPage = silently.ui.RestaurantPage.getInstance();
+    this.restaurantPage.setKey(this.apiKey);
+    this.addChild(this.restaurantPage, true);
 };
-*/
+
+/**
+ * Not implemented yet, but back button support is necessary.
+ * @param {goog.events.Event} e An event object.
+ */
+silently.Base.prototype.onHistoryEvent = function(e) {
+    var token = e.token,
+        isNavigation = e.isNavigation;
+    console.log('Navigation not implemented yet.');
+};
+
+/**
+ * Not implemented yet, but back button support is necessary.
+ * @param {goog.events.Event} e An event object.
+ */
+silently.Base.prototype.setCSRFToken = function(token) {
+    this.csrfToken = token;
+};

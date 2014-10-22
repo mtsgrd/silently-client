@@ -10,35 +10,36 @@
  */
 
 
+goog.require('goog.ui.Component');
 goog.require('goog.ui.Control');
-goog.require('silently.ControlRenderer');
-goog.provide('silently.Control');
+goog.require('silently.ui.ControlRenderer');
+goog.provide('silently.ui.Control');
 
 /**
  * @constructor
  */
-silently.Control = function(opt_content, opt_renderer, opt_domHelper) {
+silently.ui.Control = function(opt_content, opt_renderer, opt_domHelper) {
     goog.base(this, opt_content, opt_renderer ||
-            silently.ControlRenderer.getInstance(), opt_domHelper);
+            silently.ui.ControlRenderer.getInstance(), opt_domHelper);
     this.allowTextSelection_ = true;
     this.setSupportedState(goog.ui.Component.State.FOCUSED, false);
     this.handleMouseEvents_ = false;
 };
-goog.inherits(silently.Control, goog.ui.Control);
+goog.inherits(silently.ui.Control, goog.ui.Control);
 
-silently.Control.prototype.attachEvents = function() {
+silently.ui.Control.prototype.attachEvents = function() {
     // Placeholder for now. To support inheritance.
 };
 
-silently.Control.prototype.detachEvents = function() {
+silently.ui.Control.prototype.detachEvents = function() {
     // Placeholder for now. To support inheritance.
 };
 
-silently.Control.prototype.enterDocument = function() {
+silently.ui.Control.prototype.enterDocument = function() {
     goog.base(this, 'enterDocument');
 };
 
-silently.Control.prototype.disposeInternal = function() {
+silently.ui.Control.prototype.disposeInternal = function() {
     goog.base(this, 'disposeInternal');
     this.detachEvents();
 };

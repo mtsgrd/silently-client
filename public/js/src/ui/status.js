@@ -4,25 +4,27 @@
  * @author mattias@silently.com (Mattias Granlund)
  */
 
-goog.provide('silently.Status');
+goog.provide('silently.ui.Status');
+
+goog.require('goog.ui.Component');
 
 /**
  * @constructor
  */
-silently.Status = function() {
+silently.ui.Status = function() {
     goog.base(this);
 };
-goog.inherits(silently.Status, goog.ui.Component);
+goog.inherits(silently.ui.Status, goog.ui.Component);
 
-silently.Status.prototype.decorateInternal = function(element) {
+silently.ui.Status.prototype.decorateInternal = function(element) {
     goog.base(this, 'decorateInternal', element);
     this.originalContent = this.element_.innerHTML;
 };
 
-silently.Status.prototype.reset = function(element) {
+silently.ui.Status.prototype.reset = function(element) {
     this.element_.innerHTML = this.originalContent;
 };
 
-silently.Status.prototype.set = function(text) {
+silently.ui.Status.prototype.set = function(text) {
     this.element_.innerHTML = text;
 };

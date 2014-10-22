@@ -18,9 +18,7 @@ goog.require('goog.events.Event');
 goog.require('goog.events.EventHandler');
 goog.require('goog.events.EventTarget');
 goog.require('goog.events.EventType');
-goog.require('goog.json');
 goog.require('goog.structs.Queue');
-goog.require('silently.tools');
 
 
 
@@ -51,7 +49,7 @@ goog.addSingletonGetter(silently.net.WebSocket);
  */
 silently.net.WebSocket.SCRIPT_PATH = '//cdnjs.cloudflare.com/ajax/libs/socket.io/0.9.16/socket.io.min.js';
 
-silently.net.WebSocket.ENDPOINT = 'http://' + document.location.host;
+silently.net.WebSocket.ENDPOINT = 'http://' + document.location.host + '/default';
 
 
 /**
@@ -91,7 +89,9 @@ silently.net.WebSocket.EventType = {
     ROOM_EVENT: 'room_event',
     USERNAME_CHECK: 'username_check',
     VERIFY_NUMBER: 'verify_number',
-    CONFIRM_PIN: 'confirm_pin'
+    CONFIRM_PIN: 'confirm_pin',
+    RESTAURANT_LIST: 'restaurant_list',
+    RESTAURANT_DETAILS: 'restaurant_details'
 };
 
 
@@ -388,6 +388,7 @@ silently.net.WebSocket.prototype.emit = function(type, arg) {
     }
     this.assertSocketExists_();
     rv = this.socket_['emit'](type, arg);
+    this.log.fine('Emitted type ' + type + ' to socket.io:\n' + goog.debug.expose(arg));
     return rv;
 };
 
@@ -465,3 +466,6 @@ silently.net.WebSocket.prototype.disposeInternal = function() {
     delete this.socket_;
 };
 
+window.onbeforeunload = function() {
+    silently.net.WebSocket.getInstance().close();
+};

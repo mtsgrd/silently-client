@@ -17,6 +17,14 @@ $sprite_url: url('/img/art.svg');
     -webkit-transform : translate3d($tx, $ty, $tz) scale($sx, $sy);
 }
 
+@mixin translate($tx, $ty) {
+    transform : translate($tx, $ty);
+    -o-transform : translate($tx, $ty);
+    -ms-transform : translate($tx, $ty);
+    -moz-transform : translate($tx, $ty);
+    -webkit-transform : translate($tx, $ty);
+}
+
 @mixin transition-cb($ms, $t1, $t2, $t3, $t4) {
     transition: $ms cubic-bezier($t1, $t2, $t3, $t4);
     -o-transition: $ms cubic-bezier($t1, $t2, $t3, $t4);
@@ -32,3 +40,18 @@ $sprite_url: url('/img/art.svg');
     -moz-transition: $ms ease-in;
     -webkit-transition: $ms ease-in;
 };
+
+@mixin transition-easeout($ms) {
+    transition: $ms ease-out;
+    -o-transition: $ms ease-out;
+    -ms-transition: $ms ease-out;
+    -moz-transition: $ms ease-out;
+    -webkit-transition: $ms ease-out;
+};
+
+@mixin borderbox() {
+    box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+}

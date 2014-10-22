@@ -4,16 +4,16 @@
  * @author mattias@silently.com (Mattias Granlund)
  */
 
-goog.provide('silently.MapInfo');
-goog.provide('silently.MapInfoLinkedMap');
-goog.require('goog.structs.LinkedMap');
+goog.provide('silently.ui.MapInfo');
+goog.provide('silently.ui.MapInfoLinkedMap');
 goog.require('goog.Disposable');
+goog.require('goog.structs.LinkedMap');
 
 /**
  * @constructor
  */
-silently.MapInfo = function(map, pos, username) {
-    this.map = map
+silently.ui.MapInfo = function(map, pos, username) {
+    this.map = map;
         this.marker = new google.maps.Marker({
             position: pos,
             title: username,
@@ -34,18 +34,18 @@ silently.MapInfo = function(map, pos, username) {
         content: contentString
     });
 };
-goog.inherits(silently.MapInfo, goog.Disposable);
+goog.inherits(silently.ui.MapInfo, goog.Disposable);
 
-silently.MapInfo.prototype.show = function() {
-    this.infowindow.open(this.map, this.marker)
-}
+silently.ui.MapInfo.prototype.show = function() {
+    this.infowindow.open(this.map, this.marker);
+};
 
-silently.MapInfo.prototype.hide = function() {
+silently.ui.MapInfo.prototype.hide = function() {
     this.marker.setMap(null);
-    this.infowindow.close()
-}
+    this.infowindow.close();
+};
 
-silently.MapInfo.prototype.disposeInternal = function() {
+silently.ui.MapInfo.prototype.disposeInternal = function() {
     goog.base(this, 'disposeInternal');
     this.hide();
     delete this.map;
@@ -57,12 +57,12 @@ silently.MapInfo.prototype.disposeInternal = function() {
 /**
  * @constructor
  */
-silently.MapInfoLinkedMap = function(opt_maxCount, opt_cache) {
+silently.ui.MapInfoLinkedMap = function(opt_maxCount, opt_cache) {
     goog.base(this, opt_maxCount, opt_cache);
 };
-goog.inherits(silently.MapInfoLinkedMap, goog.structs.LinkedMap);
+goog.inherits(silently.ui.MapInfoLinkedMap, goog.structs.LinkedMap);
 
-silently.MapInfoLinkedMap.prototype.removeNode = function(node) {
+silently.ui.MapInfoLinkedMap.prototype.removeNode = function(node) {
     node.value.dispose();
     node.remove();
     this.map_.remove(node.key);

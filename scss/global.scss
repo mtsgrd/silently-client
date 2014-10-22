@@ -1,9 +1,5 @@
-/* Fonts */
-@import url(http://fonts.googleapis.com/css?family=Oswald);
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:400,300);
-
 html, body {
-    background-color: #26263c;
+    background-color: #fff;
     height: 100%;
 }
 
@@ -44,18 +40,6 @@ body {
 }
 ol, ul {
   list-style: none;
-}
-blockquote, q {
-  quotes: none;
-}
-/*blockquote:before, blockquote:after,
-q:before, q:after {
-  content: '';
-  content: none;
-}*/
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
 }
 input {
   font-family: 'Open Sans';

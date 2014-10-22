@@ -5,57 +5,61 @@
  */
 
 
-goog.provide('silently.Signup');
-goog.require('silently.Status');
+goog.provide('silently.ui.Signup');
 goog.require('goog.async.Delay');
-goog.require('goog.ui.LabelInput');
-goog.require('goog.ui.CustomButton');
+goog.require('goog.dom.classlist');
+goog.require('goog.events.EventType');
 goog.require('goog.ui.Component');
+goog.require('goog.ui.CustomButton');
+goog.require('goog.ui.LabelInput');
+goog.require('silently.net.WebSocket');
+goog.require('silently.ui.Control');
+goog.require('silently.ui.Status');
 
 /**
  * @constructor
  */
-silently.Signup = function(apiKey, lat, lng) {
+silently.ui.Signup = function() {
     goog.base(this);
     this.ws = silently.net.WebSocket.getInstance();
     this.focusable_ = false;
     this.checkUsername = new goog.async.Delay(this.checkUsername, 250, this);
 };
-goog.inherits(silently.Signup, goog.ui.Component);
+goog.inherits(silently.ui.Signup, goog.ui.Component);
 
 /**
  * @protected
- * @type silently.Signup
+ * @type silently.ui.Signup
  */
-silently.Signup.instance_;
+silently.ui.Signup.instance_;
 
 /**
  * @protected
  * @type {goog.ui.Component}
  */
-silently.Signup.highlighted_;
+silently.ui.Signup.highlighted_;
 
-silently.Signup.getInstance = function() {
-    if (silently.Signup.instance_) {
-        return silently.Signup.instance_;
+silently.ui.Signup.getInstance = function() {
+    if (silently.ui.Signup.instance_) {
+        return silently.ui.Signup.instance_;
     } else {
-        var signup = new silently.Signup();
-        silently.Signup.instance_ = signup;
+        var signup = new silently.ui.Signup();
+        silently.ui.Signup.instance_ = signup;
         signup.render();
         return signup;
     }
 };
 
 /** @override */
-silently.Signup.prototype.createDom = function() {
+silently.ui.Signup.prototype.createDom = function() {
     var dm = this.getDomHelper(),
         // Placeholder so we can transition into first splsah screen.
         beginPlaceHolder = dm.createDom('div'),
         // First splash screen
-        logo = dm.createDom('div', {'id': 'logo'}, 'Silently'),
+        logo = dm.createDom('div', {'id': 'logo'}, 'Yo'),
         // Second splash screen
         tagline = dm.createDom('div', {'id': 'tagline'},
-                'Whatever you want.'),
+                'Food!'),
         // Login button if user is already registered.
         loginIcon = dm.createDom('div'),
         loginLink = dm.createDom('div', {'id': 'login', 'class': goog.getCssName('login')},
@@ -126,22 +130,22 @@ silently.Signup.prototype.createDom = function() {
             numberContainer, pinContainer, passwordContainer, loginContainer,
             spinner));
 
-    this.beginPlaceHolder = new silently.Control();
+    this.beginPlaceHolder = new silently.ui.Control();
     this.beginPlaceHolder.setSupportedState(goog.ui.Component.State.SELECTED, true);
     this.addChild(this.beginPlaceHolder, false);
     this.beginPlaceHolder.decorate(beginPlaceHolder);
 
-    this.logo = new silently.Control();
+    this.logo = new silently.ui.Control();
     this.logo.setSupportedState(goog.ui.Component.State.SELECTED, true);
     this.addChild(this.logo, false);
     this.logo.decorate(logo);
 
-    this.tagline = new silently.Control();
+    this.tagline = new silently.ui.Control();
     this.tagline.setSupportedState(goog.ui.Component.State.SELECTED, true);
     this.addChild(this.tagline, false);
     this.tagline.decorate(tagline);
 
-    this.usernameContainer = new silently.Control();
+    this.usernameContainer = new silently.ui.Control();
     this.usernameContainer.setSupportedState(
             goog.ui.Component.State.SELECTED, true);
     this.addChild(this.usernameContainer, false);
@@ -156,13 +160,13 @@ silently.Signup.prototype.createDom = function() {
     this.usernameGo.decorate(usernameGo);
     this.usernameGo.setEnabled(false);
 
-    this.usernameStatus = new silently.Status();
+    this.usernameStatus = new silently.ui.Status();
     this.usernameContainer.addChild(this.usernameStatus, false);
     this.usernameStatus.decorate(usernameStatus);
 
     this.usernameProgress = usernameProgress;
 
-    this.numberContainer = new silently.Control();
+    this.numberContainer = new silently.ui.Control();
     this.numberContainer.setSupportedState(
             goog.ui.Component.State.SELECTED, true);
     this.addChild(this.numberContainer, false);
@@ -180,13 +184,13 @@ silently.Signup.prototype.createDom = function() {
     this.numberContainer.addChild(this.numberGo, false);
     this.numberGo.decorate(numberGo);
 
-    this.numberStatus = new silently.Status();
+    this.numberStatus = new silently.ui.Status();
     this.numberContainer.addChild(this.numberStatus, false);
     this.numberStatus.decorate(numberStatus);
 
     this.numberProgress = numberProgress;
 
-    this.pinContainer = new silently.Control();
+    this.pinContainer = new silently.ui.Control();
     this.pinContainer.setSupportedState(
             goog.ui.Component.State.SELECTED, true);
     this.addChild(this.pinContainer, false);
@@ -204,13 +208,13 @@ silently.Signup.prototype.createDom = function() {
     this.pinContainer.addChild(this.pinGo, false);
     this.pinGo.decorate(pinGo);
 
-    this.pinStatus = new silently.Status();
+    this.pinStatus = new silently.ui.Status();
     this.pinContainer.addChild(this.pinStatus, false);
     this.pinStatus.decorate(pinStatus);
 
     this.pinProgress = pinProgress;
 
-    this.passwordContainer = new silently.Control();
+    this.passwordContainer = new silently.ui.Control();
     this.passwordContainer.setSupportedState(
             goog.ui.Component.State.SELECTED, true);
     this.addChild(this.passwordContainer, false);
@@ -233,13 +237,13 @@ silently.Signup.prototype.createDom = function() {
     this.passwordContainer.addChild(this.passwordGo, false);
     this.passwordGo.decorate(passwordGo);
 
-    this.passwordStatus = new silently.Status();
+    this.passwordStatus = new silently.ui.Status();
     this.passwordContainer.addChild(this.passwordStatus, false);
     this.passwordStatus.decorate(passwordStatus);
 
     this.passwordProgress = passwordProgress;
 
-    this.loginContainer = new silently.Control();
+    this.loginContainer = new silently.ui.Control();
     this.loginContainer.setSupportedState(
             goog.ui.Component.State.SELECTED, true);
     this.addChild(this.loginContainer, false);
@@ -262,7 +266,7 @@ silently.Signup.prototype.createDom = function() {
     this.loginContainer.addChild(this.loginGo, false);
     this.loginGo.decorate(loginGo);
 
-    this.loginStatus = new silently.Status();
+    this.loginStatus = new silently.ui.Status();
     this.loginContainer.addChild(this.loginStatus, false);
     this.loginStatus.decorate(loginStatus);
 
@@ -274,7 +278,7 @@ silently.Signup.prototype.createDom = function() {
 };
 
 /** @override */
-silently.Signup.prototype.enterDocument = function() {
+silently.ui.Signup.prototype.enterDocument = function() {
     goog.base(this, 'enterDocument');
     this.setSelectedIndex(0);
     this.setSelectedIn(this.logo, 500);
@@ -283,7 +287,7 @@ silently.Signup.prototype.enterDocument = function() {
     this.attachEvents();
 };
 
-silently.Signup.prototype.attachEvents = function() {
+silently.ui.Signup.prototype.attachEvents = function() {
     // Convenience declarations
     var eh = this.getHandler(),
         ws = this.ws;
@@ -303,20 +307,20 @@ silently.Signup.prototype.attachEvents = function() {
     eh.listen(ws, silently.net.WebSocket.EventType.CONFIRM_PIN, this.onPinVerified);
 };
 
-silently.Signup.prototype.setSelectedIn = function(child, ms) {
+silently.ui.Signup.prototype.setSelectedIn = function(child, ms) {
     var self = this;
     setTimeout(function() {
         self.setSelectedIndex(self.indexOfChild(child));
     }, ms);
 };
 
-silently.Signup.prototype.onPinGo = function() {
+silently.ui.Signup.prototype.onPinGo = function() {
     var pin = this.pin.getValue();
     goog.dom.classlist.enable(this.pinProgress, goog.getCssName('go'), true);
     this.ws.emit('confirm_pin', {'pid': this.getProveId, 'pin': pin});
 };
 
-silently.Signup.prototype.checkUsername = function() {
+silently.ui.Signup.prototype.checkUsername = function() {
     var username = this.username.getValue();
     if (username != this.lastUsername) {
         goog.dom.classlist.enable(this.usernameProgress, goog.getCssName('go'), true);
@@ -325,7 +329,7 @@ silently.Signup.prototype.checkUsername = function() {
     }
 };
 
-silently.Signup.prototype.onBack = function(e) {
+silently.ui.Signup.prototype.onBack = function(e) {
     switch (e.target) {
         case this.numberBack:
             this.setSelected(this.usernameContainer);
@@ -341,14 +345,14 @@ silently.Signup.prototype.onBack = function(e) {
             break;
     }
 };
-silently.Signup.prototype.onCheckUsername = function() {
+silently.ui.Signup.prototype.onCheckUsername = function() {
     if (this.username.hasChanged()) {
         this.checkUsername.stop();
         this.checkUsername.start();
     }
 };
 
-silently.Signup.prototype.onNumberGo = function() {
+silently.ui.Signup.prototype.onNumberGo = function() {
     var number = this.number.getValue();
     if (number == this.verifiedNumber_) {
         this.numberStatus.set('number already verified');
@@ -361,7 +365,7 @@ silently.Signup.prototype.onNumberGo = function() {
     }
 };
 
-silently.Signup.prototype.onPinVerified = function(e) {
+silently.ui.Signup.prototype.onPinVerified = function(e) {
     goog.dom.classlist.enable(this.pinProgress, goog.getCssName('go'), false);
     if ('error' in e.data) {
         // TODO: Panic?
@@ -376,7 +380,7 @@ silently.Signup.prototype.onPinVerified = function(e) {
     }
 };
 
-silently.Signup.prototype.onNumberVerified = function(e) {
+silently.ui.Signup.prototype.onNumberVerified = function(e) {
     goog.dom.classlist.enable(this.numberProgress, goog.getCssName('go'), false);
     if ('error' in e.data) {
         // TODO: Panic?
@@ -390,11 +394,11 @@ silently.Signup.prototype.onNumberVerified = function(e) {
     }
 };
 
-silently.Signup.prototype.onUsernameGo = function() {
+silently.ui.Signup.prototype.onUsernameGo = function() {
     this.setSelected(this.numberContainer);
 };
 
-silently.Signup.prototype.onUsernameChecked = function(e) {
+silently.ui.Signup.prototype.onUsernameChecked = function(e) {
     var available = e.data['available'],
         username = e.data['username'];
 
@@ -403,22 +407,22 @@ silently.Signup.prototype.onUsernameChecked = function(e) {
         // response.
         return;
     } else if (available) {
-        this.usernameStatus.set("Username available");
+        this.usernameStatus.set('Username available');
         this.usernameGo.setEnabled(true);
         // Ask for number number verification.
     } else {
-        this.usernameStatus.set("Username unavailable");
+        this.usernameStatus.set('Username unavailable');
         this.usernameGo.setEnabled(false);
     }
     goog.dom.classlist.enable(this.usernameProgress, goog.getCssName('go'), false);
 
 };
 
-silently.Signup.prototype.onLogin = function() {
+silently.ui.Signup.prototype.onLogin = function() {
     this.setSelected(this.loginContainer);
 };
 
-silently.Signup.prototype.setSelected = function(child) {
+silently.ui.Signup.prototype.setSelected = function(child) {
     if (child && child.isEnabled()) {
         switch (child) {
             case this.usernameContainer:
@@ -445,7 +449,7 @@ silently.Signup.prototype.setSelected = function(child) {
         child.setSelected(true);
     }
 };
-silently.Signup.prototype.setSelectedIndex = function(index) {
+silently.ui.Signup.prototype.setSelectedIndex = function(index) {
     var child = this.getChildAt(index);
     this.setSelected(child);
 };

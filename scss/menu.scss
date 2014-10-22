@@ -1,0 +1,67 @@
+@import "mixins.scss";
+
+#menu {
+    display: block;
+    text-align: left;
+    .category {
+        color: #333;
+        font-size: 130%;
+        font-weight: bold;
+        padding: 2em 1em 1em 1em;
+    }
+    .menu-item {
+        color: #333;
+        cursor: pointer;
+        font-size: 100%;
+        padding: 0.5em 1em 0.5em 2em;
+        &.hover {
+            color: #000;
+        }
+        &:nth-child(2n) {
+            background-color: rgba(0, 0, 0, 0.1);
+        }
+        .info {
+            display: table;
+            width: 100%;
+            &> div {
+                display: table-cell;
+            }
+            .item-name {
+            }
+            .price {
+                text-align: right;
+                width: 80px;
+            }
+        }
+        .choices {
+            height: 0px;
+            overflow: hidden;
+            &> div {
+                @include transition-easeout(100ms);
+            }
+        }
+        &.active .choices {
+            height: initial;
+        }
+        .add-button {
+            float: right;
+            padding: 5px 10px;
+            .goog-custom-button-inner-box {
+                @include sprite(20px, 20px, -40px, -100px);
+            }
+            &.goog-custom-button-hover .goog-custom-button-inner-box {
+                @include sprite(20px, 20px, -5px, -100px);
+            }
+        }
+        .subtract-button {
+            float: right;
+            padding: 5px 10px;
+            .goog-custom-button-inner-box {
+                @include sprite(20px, 20px, -110px, -100px);
+            }
+            &.goog-custom-button-hover .goog-custom-button-inner-box {
+                @include sprite(20px, 20px, -75px, -100px);
+            }
+        }
+    }
+}

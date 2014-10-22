@@ -1,0 +1,84 @@
+// Common functionality and mixins.
+@import "mixins.scss";
+
+// Splash screen to show first time a user arrives at the this website.
+#splash {
+    color: #222;
+    font-family: 'Oswald';
+    height: 100%;
+    position: absolute;
+    min-height: 300px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    text-align: center;
+    width: 100%;
+
+    // Button padding is not universal since they are also used with sprites.
+    .goog-custom-button {
+        padding: 0.5em 1em;
+    }
+
+    // Using sibling selector to achieve in/out differences.
+    .selected + .logo {
+        opacity: 0;
+        @include transform (-50%, -50%, 0, 0.5, 0.5, 0);
+    }
+
+    // First splash screen.
+    .logo {
+        font-size: 600%;
+        font-weight: bold;
+        left: 50%;
+        opacity: 0;
+        position: absolute;
+        top: 50%;
+        @include transform (-50%, -50%, 0, 1.5, 1.5, 0);
+        @include transition-easeout(200ms);
+        z-index: -1;
+        &.selected {
+            opacity: 1;
+            z-index: 9;
+            @include transform (-50%, -50%, 0, 1, 1, 0);
+        }
+    }
+
+    // Using sibling selector to achieve in/out differences.
+    .selected + .tagline {
+        opacity: 0;
+        // Prior transformation.
+        @include transform (-50%, -50%, 0, 0.5, 0.5, 0);
+    }
+
+    // Second splash screen.
+    .tagline {
+        left: 50%;
+        opacity: 0;
+        position: absolute;
+        top: 50%;
+        z-index: -1;
+        // Out transformation.
+        @include transform (-50%, -50%, 0, 1.5, 1.5, 0);
+        @include transition-easeout(200ms);
+        &.selected {
+            opacity: 1;
+            z-index: 9;
+            // In transformation.
+            @include transform (-50%, -50%, 0, 1, 1, 0);
+        }
+        // Second splash screen text.
+        > div:first-child {
+            font-size: 300%;
+        };
+        // Second splash button.
+        .gotit-button {
+            background-color: #00a10b;
+            cursor: pointer;
+            display: block;
+            font-size: 100%;
+            margin-top: 1em;
+            &.goog-custom-button-disabled {
+                background-color: #666;
+            }
+        }
+    }
+}
