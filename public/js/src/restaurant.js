@@ -1,7 +1,7 @@
 /**
  * @fileoverview Restaurant abstraction object.
  *
- * @author mattias@giflike.com (Mattias Granlund)
+ * @author mtsgrd@gmail.com (Mattias Granlund)
  */
 
 goog.provide('silently.Restaurant');

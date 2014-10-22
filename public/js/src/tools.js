@@ -1,7 +1,7 @@
 /**
  * @fileoverview Common tools.
  *
- * @author mattias@giflike.com (Mattias Granlund)
+ * @author mtsgrd@gmail.com (Mattias Granlund)
  */
 
 goog.provide('silently.tools');

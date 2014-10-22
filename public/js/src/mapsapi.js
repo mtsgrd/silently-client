@@ -1,7 +1,7 @@
 /**
  * @fileoverview Google Maps API Loader.
  *
- * @author mattias@giflike.com (Mattias Granlund)
+ * @author mtsgrd@gmail.com (Mattias Granlund)
  */
 
 goog.provide('silently.ui.MapsAPI');
